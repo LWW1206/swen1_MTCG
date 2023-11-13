@@ -1,0 +1,37 @@
+@startuml
+
+
+class Request {
+    - method: String
+    - route: String
+    - contentLength: int
+    - body: String
+    }
+
+class Response {
+}
+
+enum HttpMethod {
+    GET
+    POST
+    PUT
+    DELETE
+    }
+
+enum ContentType {
+    APPLICATION_JSON
+    TEXT_PLAIN
+    TEXT_HTML
+}
+
+package util {
+    class HTttpMapper {
+    + toRequestObject(String request): Request
+    + toRequestString(Request request): String
+    + toResponeObject(String response): Response
+    + toResponseString(Response response): String
+}
+}
+
+@enduml
+

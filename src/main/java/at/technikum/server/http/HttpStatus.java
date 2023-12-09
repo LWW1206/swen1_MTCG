@@ -4,10 +4,16 @@ package at.technikum.server.http;
 public enum HttpStatus {
     OK(200, "OK"),
     BAD_REQUEST(400, "Bad Request"),
-    NOT_FOUND(404, "Not Found");
+    NOT_FOUND(404, "Not Found"),
+    CREATED(201, "Created"),
+    NO_CONTENT(204, "No Content"),
+    UNAUTHORIZED(401, "Unauthorized"),
+    FORBIDDEN(403, "Forbidden"),
+    CONFLICT(409, "Conflict"),
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error");
 
-    private final int code;
-    private final String message;
+    private final int code; // status Code
+    private final String message; // status Message
 
     HttpStatus(int code, String message) {
         this.code = code;

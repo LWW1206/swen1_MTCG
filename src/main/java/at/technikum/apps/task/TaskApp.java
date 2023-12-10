@@ -1,5 +1,6 @@
 package at.technikum.apps.task;
 
+import at.technikum.apps.mtcg.controller.UserController;
 import at.technikum.apps.task.controller.Controller;
 import at.technikum.apps.task.controller.TaskController;
 import at.technikum.server.ServerApplication;

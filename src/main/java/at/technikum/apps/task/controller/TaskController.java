@@ -27,7 +27,7 @@ public class TaskController extends Controller {
 
     @Override
     public Response handle(Request request) {
-
+        System.out.println("in taskcontroller");
         if (request.getRoute().equals("/tasks")) {
             switch (request.getMethod()) {
                 case "GET": return readAll(request);

@@ -17,9 +17,9 @@ public class RequestHandler {
     private BufferedReader in;
     private PrintWriter out;
 
-    private final Socket client;
+    private final Socket client; //represent the connection between the server and the client that has made a request - communication channel between the server and the specific client
 
-    private final ServerApplication app;
+    private final ServerApplication app; // responsible for processing incoming request objects and producing reponse
 
     public RequestHandler(Socket client, ServerApplication app) {
         this.client = client;

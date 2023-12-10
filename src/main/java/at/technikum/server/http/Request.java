@@ -2,29 +2,25 @@ package at.technikum.server.http;
 
 public class Request {
 
-    // GET, POST, PUT, DELETE
     private String method;
-
-    // /, /home, /package
     private String route;
-
     private String host;
-
-    // application/json, text/plain
     private String contentType;
-
-    // 0, 17
     private int contentLength;
-
-    // none, "{ "name": "foo" }"
     private String body;
+    private String path;
+    private String token;
+    private String username;
+    private String pathUser;
+    private String tradeID;
+    private String format;
 
     public String getMethod() {
         return method;
     }
 
-    public void setMethod(HttpMethod httpMethod) {
-        this.method = httpMethod.getMethod();
+    public void setMethod(HttpMethod method) {
+        this.method = method.getMethod();
     }
 
     public String getRoute() {
@@ -65,5 +61,53 @@ public class Request {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPathUser() {
+        return pathUser;
+    }
+
+    public void setPathUser(String pathUser) {
+        this.pathUser = pathUser;
+    }
+
+    public String getTradeID() {
+        return tradeID;
+    }
+
+    public void setTradeID(String tradeID) {
+        this.tradeID = tradeID;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 }

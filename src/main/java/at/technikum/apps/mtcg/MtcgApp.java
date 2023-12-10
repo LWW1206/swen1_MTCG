@@ -2,6 +2,7 @@ package at.technikum.apps.mtcg;
 
 import at.technikum.apps.mtcg.controller.Controller;
 import at.technikum.apps.mtcg.controller.UserController;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;

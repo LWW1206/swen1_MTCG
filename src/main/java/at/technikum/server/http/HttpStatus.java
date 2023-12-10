@@ -10,7 +10,8 @@ public enum HttpStatus {
     UNAUTHORIZED(401, "Unauthorized"),
     FORBIDDEN(403, "Forbidden"),
     CONFLICT(409, "Conflict"),
-    INTERNAL_SERVER_ERROR(500, "Internal Server Error");
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
+    METHOD_NOT_ALLOWED(405, "Method not allowed");
 
     private final int code; // status Code
     private final String message; // status Message
@@ -27,4 +28,6 @@ public enum HttpStatus {
     public String getMessage() {
         return message;
     }
+
+
 }

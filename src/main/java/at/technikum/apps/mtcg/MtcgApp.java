@@ -19,7 +19,7 @@ public class MtcgApp implements ServerApplication {
 
     public MtcgApp() {
         controllers.add(new UserController(new UserRepository()));
-        controllers.add(new SessionController());
+        controllers.add(new SessionController(new UserRepository()));
     }
 
     @Override

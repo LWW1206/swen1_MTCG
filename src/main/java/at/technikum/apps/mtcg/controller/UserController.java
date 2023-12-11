@@ -56,7 +56,7 @@ public class UserController implements Controller {
         return ResponseHelper.generateResponse(HttpStatus.OK, "User successfully updated");
     }
 
-    private Response registerUser(Request request) {
+    Response registerUser(Request request) {
         ObjectMapper objectMapper = new ObjectMapper();
         user newUser = null;
 

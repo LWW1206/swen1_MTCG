@@ -13,8 +13,8 @@ import java.io.IOException;
 public class SessionController implements Controller {
     private final UserRepository userRepo;
 
-    public SessionController() {
-        this.userRepo = new UserRepository();
+    public SessionController(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override

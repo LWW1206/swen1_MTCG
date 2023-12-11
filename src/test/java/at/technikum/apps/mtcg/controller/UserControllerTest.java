@@ -2,25 +2,35 @@ package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.controller.UserController;
 import at.technikum.apps.mtcg.repository.UserRepository;
-import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
-import at.technikum.apps.template.user;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class UserControllerTest {
 
+    @Mock
+    private UserRepository mockUserRepo;
+
+    private UserController userController;
+    private Request mockRequest;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        userController = new UserController(mockUserRepo);
+        mockRequest = Mockito.mock(Request.class);
+    }
+
     @Test
     public void testHandleGetUserData() {
-        UserRepository mockUserRepo = Mockito.mock(UserRepository.class);
-        UserController userController = new UserController(mockUserRepo);
-
-        Request mockRequest = Mockito.mock(Request.class);
         when(mockRequest.getRoute()).thenReturn("/users");
         when(mockRequest.getMethod()).thenReturn("GET");
 
@@ -30,10 +40,6 @@ public class UserControllerTest {
 
     @Test
     public void testHandleUpdateUser() {
-        UserRepository mockUserRepo = Mockito.mock(UserRepository.class);
-        UserController userController = new UserController(mockUserRepo);
-
-        Request mockRequest = Mockito.mock(Request.class);
         when(mockRequest.getRoute()).thenReturn("/users");
         when(mockRequest.getMethod()).thenReturn("PUT");
 
@@ -43,10 +49,7 @@ public class UserControllerTest {
 
     @Test
     public void testHandleRegisterUser() {
-        UserRepository mockUserRepo = Mockito.mock(UserRepository.class);
-        UserController userController = new UserController(mockUserRepo);
-
-        Request mockRequest = Mockito.mock(Request.class);
+        when(mockUserRepo.createUser(anyString(), anyString())).thenReturn(true);
         when(mockRequest.getRoute()).thenReturn("/users");
         when(mockRequest.getMethod()).thenReturn("POST");
 
@@ -57,4 +60,16 @@ public class UserControllerTest {
         assertEquals("User created", response.getBody());
     }
 
+    @Test
+    public void testHandleRegisterUserWrongFormat() {
+        when(mockUserRepo.createUser(anyString(), anyString())).thenReturn(true);
+        when(mockRequest.getRoute()).thenReturn("/users");
+        when(mockRequest.getMethod()).thenReturn("POST");
+
+        String requestBody = "{\"username\":\"kienboec\", \"Password\":\"daniel\"}";
+        when(mockRequest.getBody()).thenReturn(requestBody);
+
+        Response response = userController.handle(mockRequest);
+        assertEquals("Invalid user data", response.getBody());
+    }
 }

@@ -27,7 +27,6 @@ public class UserController implements Controller {
 
     @Override
     public Response handle(Request request) {
-        System.out.println("in usercontroller");
 
         if (request.getRoute().equals("/users")) {
             switch (request.getMethod()) {
@@ -81,16 +80,25 @@ public class UserController implements Controller {
         }
 
         if (newUser != null) {
-            boolean userCreated = userRepo.createUser(newUser.getUsername(), newUser.getPassword());
-            if (userCreated) {
-                Response response = new Response();
-                response.setStatus(HttpStatus.CREATED);
-                response.setBody("User created");
-                return response;
-            } else {
+            try {
+                boolean userCreated = userRepo.createUser(newUser.getUsername(), newUser.getPassword());
+
+                if (userCreated) {
+                    Response response = new Response();
+                    response.setStatus(HttpStatus.CREATED);
+                    response.setBody("User created");
+                    return response;
+                } else {
+                    Response response = new Response();
+                    response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                    response.setBody("User already exists");
+                    return response;
+                }
+            } catch (RuntimeException e) {
+                // Handle the runtime exception as needed
                 Response response = new Response();
                 response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-                response.setBody("Failed to create user");
+                response.setBody("Failed to create user: " + e.getMessage()); // Include the exception message if needed
                 return response;
             }
         } else {
@@ -100,5 +108,6 @@ public class UserController implements Controller {
             return response;
         }
     }
+
 
 }

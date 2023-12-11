@@ -30,21 +30,53 @@ public class UserRepository extends Repository {
 
 
     public boolean createUser(String username, String password) {
+        if (doesUserExist(username) != null) {
+            // User already exists, handle this situation as needed
+            return false; // For example, return false to indicate failure
+        }
         String query = "INSERT INTO usertable (username, password) VALUES (?, ?)";
 
         try (Connection connection = databaseConnection.getConnection()) {
             assert connection != null;
             try (PreparedStatement ps = connection.prepareStatement(query)) {
 
-                    ps.setString(1, username);
-                    ps.setString(2,password);
+                ps.setString(1, username);
+                ps.setString(2, password);
 
                 int rowsAffected = ps.executeUpdate(); //execute the query and get the number of affected rows
                 return rowsAffected > 0; //return true if atleast one row was affected
-
-                }
+            }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
+
+    private String generateSessionToken(String username) {
+        return "sessiontoken" + username;
+    }
+
+    public boolean loginUser(String username, String password) {
+        if(authentication(username, password)) {
+            String Token = generateSessionToken(username);
+            return true;
+        }
+        return false;
+    }
+    public boolean authentication(String username, String password) {
+        String query = "SELECT * FROM usertable WHERE username = ? AND password = ?";
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, username);
+            ps.setString(2, password);
+
+            try (ResultSet result = ps.executeQuery()) {
+                return result.next();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

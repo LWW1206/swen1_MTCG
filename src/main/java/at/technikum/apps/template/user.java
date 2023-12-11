@@ -3,27 +3,27 @@ package at.technikum.apps.template;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class user {
-    @JsonProperty("username")
-    private String username;
+    @JsonProperty("Username")
+    private String Username;
 
-    @JsonProperty("password")
-    private String password;
+    @JsonProperty("Password")
+    private String Password;
 
     public user() {
         // Default no-argument constructor
     }
 
     public user(String username, String password) {
-        this.username = username;
-        this.password = password;
+        this.Username = username;
+        this.Password = password;
     }
 
     public String getUsername() {
-        return username;
+        return Username;
     }
 
     public String getPassword() {
-        return password;
+        return Password;
     }
 
 }

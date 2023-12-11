@@ -10,7 +10,6 @@ public class user {
     private String Password;
 
     public user() {
-        // Default no-argument constructor
     }
 
     public user(String username, String password) {

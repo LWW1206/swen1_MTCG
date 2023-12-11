@@ -38,4 +38,9 @@ public class Response {
     public void setBody(String body) {
         this.body = body;
     }
+    public HttpStatus getStatus() {
+        return HttpStatus.valueOf(String.valueOf(statusCode));
+    }
+
+
 }

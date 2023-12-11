@@ -18,7 +18,7 @@ public class MtcgApp implements ServerApplication {
     private List<Controller> controllers = new ArrayList<>();
 
     public MtcgApp() {
-        controllers.add(new UserController());
+        controllers.add(new UserController(new UserRepository()));
         controllers.add(new SessionController());
     }
 

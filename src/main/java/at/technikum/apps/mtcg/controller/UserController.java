@@ -1,23 +1,22 @@
 package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.repository.UserRepository;
+import at.technikum.apps.template.ResponseHelper;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import at.technikum.apps.template.user;
-import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.net.ssl.SSLEngineResult;
 import java.io.IOException;
 
 public class UserController implements Controller {
 
     private final UserRepository userRepo;
 
-    public UserController() {
-        this.userRepo = new UserRepository();
+    public UserController(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -27,7 +26,6 @@ public class UserController implements Controller {
 
     @Override
     public Response handle(Request request) {
-
         if (request.getRoute().equals("/users")) {
             switch (request.getMethod()) {
                 case "GET":
@@ -39,12 +37,7 @@ public class UserController implements Controller {
             }
         }
 
-        Response response = new Response();
-        response.setStatus(HttpStatus.OK);
-        response.setContentType(HttpContentType.TEXT_PLAIN);
-        response.setBody("user controller");
-
-        return response;
+        return ResponseHelper.generateResponse(HttpStatus.OK, "user controller");
     }
 
     private Response getUserData(Request request) {
@@ -52,23 +45,18 @@ public class UserController implements Controller {
         String token = request.getToken();
         String path = request.getPath();
 
-        Response response = new Response();
-        response.setStatus(HttpStatus.OK);
-        response.setBody("got User Data");
+        // Some logic to get user data
 
-        return response;
+        return ResponseHelper.generateResponse(HttpStatus.OK, "got User Data");
     }
 
     private Response updateUser(Request request) {
-        Response response = new Response();
-        response.setStatus(HttpStatus.OK);
-        response.setBody("User successfully updated");
+        // Logic to update user
 
-        return response;
+        return ResponseHelper.generateResponse(HttpStatus.OK, "User successfully updated");
     }
 
     private Response registerUser(Request request) {
-
         ObjectMapper objectMapper = new ObjectMapper();
         user newUser = null;
 
@@ -80,32 +68,22 @@ public class UserController implements Controller {
         }
 
         if (newUser != null) {
-            try {
-                boolean userCreated = userRepo.createUser(newUser.getUsername(), newUser.getPassword());
-
-                if (userCreated) {
-                    Response response = new Response();
-                    response.setStatus(HttpStatus.CREATED);
-                    response.setBody("User created");
-                    return response;
-                } else {
-                    Response response = new Response();
-                    response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-                    response.setBody("User already exists");
-                    return response;
-                }
-            } catch (RuntimeException e) {
-                // Handle the runtime exception as needed
-                Response response = new Response();
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-                response.setBody("Failed to create user: " + e.getMessage()); // Include the exception message if needed
-                return response;
-            }
+            return newUserResponse(newUser);
         } else {
-            Response response = new Response();
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setBody("Invalid user data");
-            return response;
+            return ResponseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid user data");
+        }
+    }
+
+    private Response newUserResponse(user newUser) {
+        try {
+            boolean userCreated = userRepo.createUser(newUser.getUsername(), newUser.getPassword());
+            if (userCreated) {
+                return ResponseHelper.generateResponse(HttpStatus.CREATED, "User created");
+            } else {
+                return ResponseHelper.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, "User already exists");
+            }
+        } catch (RuntimeException e) {
+            return ResponseHelper.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create user: " + e.getMessage());
         }
     }
 

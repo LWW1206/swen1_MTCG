@@ -15,6 +15,7 @@ public class Request {
     private String tradeID;
     private String format;
 
+
     public String getMethod() {
         return method;
     }

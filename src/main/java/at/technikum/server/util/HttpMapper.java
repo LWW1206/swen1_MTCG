@@ -17,6 +17,7 @@ public class HttpMapper {
         request.setMethod(getHttpMethod(httpRequest));
         request.setRoute(getRoute(httpRequest));
         request.setHost(getHttpHeader("Host", httpRequest));
+        request.setToken(getAuthorizationToken(httpRequest));
 
         // THOUGHT: don't do the content parsing in this method
         String contentLengthHeader = getHttpHeader("Content-Length", httpRequest);
@@ -72,6 +73,19 @@ public class HttpMapper {
         }
 
         return matcher.group(1);
+    }
+
+    public static String getAuthorizationToken(String httpRequest) {
+
+        //String[] splitRequest = httpRequest.split("\r");
+        Pattern pattern = Pattern.compile("Authorization:\\sBearer\\s(\\S+)");
+        Matcher matcher = pattern.matcher(httpRequest);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        return null; // Return null if no token found
     }
 }
 

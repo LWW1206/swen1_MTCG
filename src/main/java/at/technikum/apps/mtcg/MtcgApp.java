@@ -1,6 +1,7 @@
 package at.technikum.apps.mtcg;
 
 import at.technikum.apps.mtcg.controller.Controller;
+import at.technikum.apps.mtcg.controller.PackageController;
 import at.technikum.apps.mtcg.controller.SessionController;
 import at.technikum.apps.mtcg.controller.UserController;
 import at.technikum.apps.mtcg.repository.UserRepository;
@@ -18,8 +19,9 @@ public class MtcgApp implements ServerApplication {
     private List<Controller> controllers = new ArrayList<>();
 
     public MtcgApp() {
-        controllers.add(new UserController(new UserRepository()));
-        controllers.add(new SessionController(new UserRepository()));
+        controllers.add(new UserController());
+        controllers.add(new SessionController());
+        controllers.add(new PackageController());
     }
 
     @Override

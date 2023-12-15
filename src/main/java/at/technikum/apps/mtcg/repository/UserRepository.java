@@ -52,7 +52,7 @@ public class UserRepository extends Repository {
     }
 
     private String generateSessionToken(String username) {
-        return "sessiontoken" + username;
+        return username + "-mtcgToken";
     }
 
     public boolean loginUser(String username, String password) {

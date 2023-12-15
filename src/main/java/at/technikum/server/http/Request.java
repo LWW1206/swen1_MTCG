@@ -72,7 +72,7 @@ public class Request {
         this.path = path;
     }
 
-    public String getToken() {
+    public String getToken(Request request) {
         return token;
     }
 

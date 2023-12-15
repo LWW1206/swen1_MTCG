@@ -25,7 +25,7 @@ public class UserControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userController = new UserController(mockUserRepo);
+        userController = new UserController();
         mockRequest = Mockito.mock(Request.class);
     }
 

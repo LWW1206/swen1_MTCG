@@ -1,4 +1,4 @@
-package at.technikum.apps.template;
+package at.technikum.apps.mtcg.template;
 
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Response;

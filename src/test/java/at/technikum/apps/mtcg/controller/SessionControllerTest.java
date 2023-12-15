@@ -25,7 +25,7 @@ class SessionControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        sessionController = new SessionController(userRepository);
+        sessionController = new SessionController();
     }
 
     @Test

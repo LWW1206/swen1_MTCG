@@ -2,7 +2,7 @@ package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.UserService;
-import at.technikum.apps.mtcg.template.ResponseHelper;
+import at.technikum.apps.mtcg.controller.helpers.responseHelper;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -37,27 +37,27 @@ public class UserController implements Controller {
             }
         }
 
-        return ResponseHelper.generateResponse(HttpStatus.OK, "in user controller");
+        return responseHelper.generateResponse(HttpStatus.OK, "in user controller");
     }
 
     private Response getUserData(Request request) {
         String[] path = request.getRoute().split("/");
 
         if(path.length < 3) {
-            return ResponseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid Request");
+            return responseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid Request");
         }
 
         String username = path[2];
         System.out.println(username);
         // implement communication with db
 
-        return ResponseHelper.generateResponse(HttpStatus.OK, "got User Data");
+        return responseHelper.generateResponse(HttpStatus.OK, "got User Data");
     }
 
     private Response updateUser(Request request) {
         //  update user
 
-        return ResponseHelper.generateResponse(HttpStatus.OK, "User successfully updated");
+        return responseHelper.generateResponse(HttpStatus.OK, "User successfully updated");
     }
 
     Response registerUser(Request request) {
@@ -74,7 +74,7 @@ public class UserController implements Controller {
         if (newUser != null) {
             return newUserResponse(newUser);
         } else {
-            return ResponseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid user data");
+            return responseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid user data");
         }
     }
 
@@ -82,12 +82,12 @@ public class UserController implements Controller {
         try {
             boolean userCreated = userService.createUser(newUser.getUsername(), newUser.getPassword());
             if (userCreated) {
-                return ResponseHelper.generateResponse(HttpStatus.CREATED, "User created");
+                return responseHelper.generateResponse(HttpStatus.CREATED, "User created");
             } else {
-                return ResponseHelper.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, "User already exists");
+                return responseHelper.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, "User already exists");
             }
         } catch (RuntimeException e) {
-            return ResponseHelper.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create user: " + e.getMessage());
+            return responseHelper.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create user: " + e.getMessage());
         }
     }
 

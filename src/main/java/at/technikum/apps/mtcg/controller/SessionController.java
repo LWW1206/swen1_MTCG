@@ -2,7 +2,7 @@ package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.SessionService;
-import at.technikum.apps.mtcg.template.ResponseHelper;
+import at.technikum.apps.mtcg.controller.helpers.responseHelper;
 import at.technikum.apps.mtcg.template.user;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
@@ -51,12 +51,12 @@ public class SessionController implements Controller {
         if (user != null) {
             boolean loggedIn = sessionService.loginUser(user.getUsername(), user.getPassword());
             if (loggedIn) {
-                return ResponseHelper.generateResponse(HttpStatus.OK, "User logged in successfully");
+                return responseHelper.generateResponse(HttpStatus.OK, "User logged in successfully");
             } else {
-                return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+                return responseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "Invalid username or password");
             }
         } else {
-            return ResponseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid user data");
+            return responseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid user data");
         }
     }
 }

@@ -77,7 +77,6 @@ public class HttpMapper {
 
     public static String getAuthorizationToken(String httpRequest) {
 
-        //String[] splitRequest = httpRequest.split("\r");
         Pattern pattern = Pattern.compile("Authorization:\\sBearer\\s(\\S+)");
         Matcher matcher = pattern.matcher(httpRequest);
 

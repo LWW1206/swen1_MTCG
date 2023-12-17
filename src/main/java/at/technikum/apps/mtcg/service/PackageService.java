@@ -25,4 +25,12 @@ public class PackageService {
         packageRepository.savePackage(cards);
     }
 
+    public boolean packageAvailable() {
+        return packageRepository.allPackagesBought();
+    }
+
+
+    public boolean buyPackage(String name) {
+        return packageRepository.buyPackage();
+    }
 }

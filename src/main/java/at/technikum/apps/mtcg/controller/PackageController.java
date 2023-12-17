@@ -3,14 +3,13 @@ package at.technikum.apps.mtcg.controller;
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackageRepository;
 import at.technikum.apps.mtcg.service.PackageService;
-import at.technikum.apps.mtcg.template.ResponseHelper;
+import at.technikum.apps.mtcg.controller.helpers.responseHelper;
 import at.technikum.apps.mtcg.template.card;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +28,11 @@ public class PackageController implements Controller {
     public Response handle(Request request) {
 
         if (!request.getMethod().equals("POST")) {
-            return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "route package only takes post requests");
+            return responseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "route package only takes post requests");
         }
 
         if (!isAdmin(request)) {
-            return ResponseHelper.generateResponse(HttpStatus.OK, "not admin");
+            return responseHelper.generateResponse(HttpStatus.OK, "not admin");
         }
         if (isAdmin(request)) {
             return createPackage(request);
@@ -59,7 +58,7 @@ public class PackageController implements Controller {
             }
 
             packageService.savePackage(cardList);
-            return ResponseHelper.generateResponse(HttpStatus.CREATED, "Package created successfully");
+            return responseHelper.generateResponse(HttpStatus.CREATED, "Package created successfully");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

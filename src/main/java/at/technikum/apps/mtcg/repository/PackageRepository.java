@@ -1,7 +1,7 @@
 package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.database.databaseConnection;
-import at.technikum.apps.mtcg.template.card;
+import at.technikum.apps.mtcg.template.Card;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PackageRepository {
 
-    public void savePackage(List<card> cards) {
+    public void savePackage(List<Card> cards) {
         String query = "INSERT INTO packages (card1, card2, card3, card4, card5) values (?, ? , ?, ?, ?)";
         try (Connection connection = databaseConnection.getConnection()) {
             assert connection != null;

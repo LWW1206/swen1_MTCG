@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class card {
+public class Card {
 
     @JsonProperty("Id")
     private String id;
@@ -20,14 +20,14 @@ public class card {
     @JsonIgnore
     private Boolean monsterBoolean;
 
-    public card() {
+    public Card() {
 
     }
 
-    public card(String cardData) {
+    public Card(String cardData) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            card singleCard = objectMapper.readValue(cardData, card.class);
+            Card singleCard = objectMapper.readValue(cardData, Card.class);
             this.id = singleCard.getId();
             this.name = singleCard.getName();
             this.damage = singleCard.getDamage();

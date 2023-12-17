@@ -1,5 +1,8 @@
 package at.technikum.apps.mtcg.repository;
 import at.technikum.apps.database.databaseConnection;
+import at.technikum.apps.mtcg.template.UserData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -31,8 +34,8 @@ public class UserRepository extends Repository {
 
     public boolean createUser(String username, String password) {
         if (doesUserExist(username) != null) {
-            // User already exists, handle this situation as needed
-            return false; // For example, return false to indicate failure
+            // User already exists
+            return false;
         }
         String query = "INSERT INTO usertable (username, password) VALUES (?, ?)";
 
@@ -159,4 +162,43 @@ public class UserRepository extends Repository {
         }
     }
 
+    public UserData getUserData(String username) {
+        String query = "SELECT name, bio, image FROM usertable WHERE username = ?";
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, username);
+
+            try (ResultSet result = ps.executeQuery()) {
+                if (result.next()) {
+                    String name = result.getString("name");
+                    String bio = result.getString("bio");
+                    String image = result.getString("image");
+
+                    return new UserData(name, bio, image);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public void updateUserData(String username, UserData userData) {
+        String updateQuery = "UPDATE usertable SET name = ?, bio = ?, image = ? WHERE username = ?";
+
+        try (Connection connection = databaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(updateQuery)) {
+
+            ps.setString(1, userData.getName());
+            ps.setString(2, userData.getBio());
+            ps.setString(3, userData.getImage());
+            ps.setString(4, username);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -2,7 +2,7 @@ package at.technikum.apps.mtcg.service;
 
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackageRepository;
-import at.technikum.apps.mtcg.template.card;
+import at.technikum.apps.mtcg.template.Card;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,8 +18,8 @@ public class PackageService {
         this.cardRepository = cardRepository;
     }
 
-    public void savePackage(List<card> cards) throws SQLException {
-        for(card singleCard: cards) {
+    public void savePackage(List<Card> cards) throws SQLException {
+        for(Card singleCard: cards) {
             cardRepository.saveCard(singleCard);
         }
         packageRepository.savePackage(cards);

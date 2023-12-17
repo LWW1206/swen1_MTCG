@@ -2,17 +2,17 @@ package at.technikum.apps.mtcg.template;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class user {
+public class User {
     @JsonProperty("Username")
     private String Username;
 
     @JsonProperty("Password")
     private String Password;
 
-    public user() {
+    public User() {
     }
 
-    public user(String username, String password) {
+    public User(String username, String password) {
         this.Username = username;
         this.Password = password;
     }

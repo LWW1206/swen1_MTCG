@@ -1,11 +1,12 @@
-CREATE DATABASE taskdb;
-DROP DATABASE taskdb;
 
 CREATE TABLE IF NOT EXISTS usertable (
     username VARCHAR(255) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
     token VARCHAR(255) DEFAULT NULL,
-    coins INT DEFAULT 20
+    coins INT DEFAULT 20,
+    name VARCHAR(255) DEFAULT NULL,
+    bio VARCHAR(255) DEFAULT NULL,
+    image VARCHAR(266) DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS card (
@@ -28,4 +29,3 @@ create table packages (
     available bool default true not null
 );
 
-DROP TABLE task;

@@ -2,8 +2,8 @@ package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.SessionService;
-import at.technikum.apps.mtcg.controller.helpers.responseHelper;
-import at.technikum.apps.mtcg.template.user;
+import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
+import at.technikum.apps.mtcg.template.User;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -39,11 +39,11 @@ public class SessionController implements Controller {
 
     private Response loginUser(Request request) {
         ObjectMapper objectMapper = new ObjectMapper();
-        user user = null;
+        User user = null;
 
         try {
             String requestBody = request.getBody();
-            user = objectMapper.readValue(requestBody, user.class);
+            user = objectMapper.readValue(requestBody, User.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,12 +51,12 @@ public class SessionController implements Controller {
         if (user != null) {
             boolean loggedIn = sessionService.loginUser(user.getUsername(), user.getPassword());
             if (loggedIn) {
-                return responseHelper.generateResponse(HttpStatus.OK, "User logged in successfully");
+                return ResponseHelper.generateResponse(HttpStatus.OK, "User logged in successfully");
             } else {
-                return responseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+                return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "Invalid username or password");
             }
         } else {
-            return responseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid user data");
+            return ResponseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid user data");
         }
     }
 }

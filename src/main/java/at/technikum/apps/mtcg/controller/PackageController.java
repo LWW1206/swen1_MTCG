@@ -1,14 +1,14 @@
 package at.technikum.apps.mtcg.controller;
 
+import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackageRepository;
 import at.technikum.apps.mtcg.service.PackageService;
-import at.technikum.apps.mtcg.controller.helpers.responseHelper;
-import at.technikum.apps.mtcg.template.card;
+import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
+import at.technikum.apps.mtcg.template.Card;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,13 +28,13 @@ public class PackageController implements Controller {
     public Response handle(Request request) {
 
         if (!request.getMethod().equals("POST")) {
-            return responseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "route package only takes post requests");
+            return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "route package only takes post requests");
         }
 
-        if (!isAdmin(request)) {
-            return responseHelper.generateResponse(HttpStatus.OK, "not admin");
+        if (!AuthorizationHelper.isAdmin(request)) {
+            return ResponseHelper.generateResponse(HttpStatus.OK, "not admin");
         }
-        if (isAdmin(request)) {
+        if (AuthorizationHelper.isAdmin(request)) {
             return createPackage(request);
         }
 
@@ -45,31 +45,22 @@ public class PackageController implements Controller {
         String requestBody = request.getBody();
         requestBody = requestBody.substring(1, requestBody.length() - 1); //trim the [ ]
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
         try {
-            List<card> cardList = new ArrayList<>();
+            List<Card> cardList = new ArrayList<>();
 
             String[] cardsArray = requestBody.split("\\s*,\\s*(?=\\{)"); // split
 
             for (String cardData : cardsArray) {
-                card newCard = new card(cardData);
+                Card newCard = new Card(cardData);
                 cardList.add(newCard);
             }
 
             packageService.savePackage(cardList);
-            return responseHelper.generateResponse(HttpStatus.CREATED, "Package created successfully");
+            return ResponseHelper.generateResponse(HttpStatus.CREATED, "Package created successfully");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    private boolean isAdmin(Request request) {
-        String token = request.getToken(request);
-
-        return token != null && token.equals("admin-mtcgToken");
 
     }
 }

@@ -1,7 +1,7 @@
 package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.database.databaseConnection;
-import at.technikum.apps.mtcg.template.card;
+import at.technikum.apps.mtcg.template.Card;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class CardRepository extends Repository {
 
-    public void saveCard(card Card) throws SQLException {
+    public void saveCard(Card Card) throws SQLException {
         String query = "INSERT INTO card (card_id, name, damage, monster_type, element_type) VALUES (?,?,?,?,?)";
         try (Connection connection = databaseConnection.getConnection()) {
             assert connection != null;

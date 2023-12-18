@@ -32,13 +32,13 @@ public class PackageController implements Controller {
         }
 
         if (!AuthorizationHelper.isAdmin(request)) {
-            return ResponseHelper.generateResponse(HttpStatus.OK, "not admin");
+            return ResponseHelper.generateResponse(HttpStatus.FORBIDDEN, "Provided user is not admin");
         }
         if (AuthorizationHelper.isAdmin(request)) {
             return createPackage(request);
         }
 
-        return null;
+        return ResponseHelper.generateResponse(HttpStatus.NOT_FOUND, "smt went wrong");
     }
 
     private Response createPackage(Request request) {

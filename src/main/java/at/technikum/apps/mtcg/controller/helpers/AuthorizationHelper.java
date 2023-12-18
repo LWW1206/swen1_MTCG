@@ -1,5 +1,8 @@
 package at.technikum.apps.mtcg.controller.helpers;
 
+import at.technikum.apps.mtcg.repository.UserRepository;
+import at.technikum.apps.mtcg.service.UserService;
+import at.technikum.apps.mtcg.template.User;
 import at.technikum.server.http.Request;
 
 public class AuthorizationHelper {

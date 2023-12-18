@@ -19,6 +19,9 @@ public class UserService {
     }
     public boolean tokenExists(Request request) {
         String token = request.getToken(request);
+        if(token == null) {
+            return false;
+        }
         String username = AuthorizationHelper.extractName(token);
         return userRepository.checkToken(username);
     }

@@ -24,6 +24,14 @@ public class Card {
 
     }
 
+    public Card(String id, String name, Float damage, boolean monsterType, String elementType) {
+        this.id = id;
+        this.name = name;
+        this.damage = damage;
+        this.monsterBoolean = monsterType;
+        this.elementType = elementType;
+    }
+
     public Card(String cardData) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {

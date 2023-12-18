@@ -29,8 +29,13 @@ public class PackageService {
         return packageRepository.allPackagesBought();
     }
 
-
     public boolean buyPackage(String name) {
-        return packageRepository.buyPackage();
+        return packageRepository.buyPackage(name);
     }
+
+    public List <String> getCardIds(String name) {
+        return packageRepository.getAllCardsByUser(name);
+    }
+
+
 }

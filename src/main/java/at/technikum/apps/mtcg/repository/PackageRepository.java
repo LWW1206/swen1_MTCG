@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PackageRepository {
@@ -27,7 +28,7 @@ public class PackageRepository {
     }
 
     public boolean allPackagesBought() {
-        String query = "SELECT COUNT(*) FROM packages WHERE available = true";
+        String query = "SELECT COUNT(*) FROM packages WHERE boughtBy IS NULL";
 
         try (Connection connection = databaseConnection.getConnection()) {
             assert connection != null;
@@ -46,12 +47,13 @@ public class PackageRepository {
         return false;
     }
 
-    public boolean buyPackage() {
-        String updateQuery = "UPDATE packages SET available = false WHERE id = (SELECT id FROM packages WHERE available = true ORDER BY id LIMIT 1)";
+    public boolean buyPackage(String user) {
+        String updateQuery = "UPDATE packages SET boughtBy = ? WHERE id = (SELECT id FROM packages WHERE boughtBy IS NULL ORDER BY id LIMIT 1)";
 
         try (Connection connection = databaseConnection.getConnection()) {
             assert connection != null;
             try (PreparedStatement ps = connection.prepareStatement(updateQuery)) {
+                ps.setString(1, user);
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected > 0) {
@@ -62,5 +64,33 @@ public class PackageRepository {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<String> getAllCardsByUser(String username) {
+        List<String> cardIds = new ArrayList<>();
+        String query = "SELECT card1, card2, card3, card4, card5 FROM packages WHERE boughtBy = ?";
+
+        try (Connection connection = databaseConnection.getConnection()) {
+            assert connection != null;
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+                ps.setString(1, username);
+
+                try (ResultSet result = ps.executeQuery()) {
+                    while (result.next()) {
+                        cardIds.add(result.getString("card1"));
+                        cardIds.add(result.getString("card2"));
+                        cardIds.add(result.getString("card3"));
+                        cardIds.add(result.getString("card4"));
+                        cardIds.add(result.getString("card5"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return cardIds;
     }
 }

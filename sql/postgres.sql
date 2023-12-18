@@ -26,6 +26,6 @@ create table packages (
     card3 varchar(255) not null,
     card4 varchar(255) not null,
     card5 varchar(255) not null,
-    available bool default true not null
+    boughtBy varchar(255) DEFAULT null
 );
 

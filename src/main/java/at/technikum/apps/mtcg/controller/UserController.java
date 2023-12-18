@@ -55,6 +55,9 @@ public class UserController implements Controller {
 
         if(!AuthorizationHelper.isAdmin(request) && !Objects.equals(request.getToken(request), username + "-mtcgToken"))
             return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "not admin/ not user");
+        else if(!userService.tokenExists(request))
+            return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "user not logged in");
+
         try {
             UserData retrivedUserData = userService.getUserData(username);
             String userJson = objectMapper.writeValueAsString(retrivedUserData);
@@ -70,6 +73,8 @@ public class UserController implements Controller {
 
         if(!AuthorizationHelper.isAdmin(request) && !Objects.equals(request.getToken(request), username + "-mtcgToken"))
             return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "not admin/not user");
+        else if(!userService.tokenExists(request))
+            return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "user not logged in");
 
         UserData userData;
         try {

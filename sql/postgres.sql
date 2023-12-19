@@ -10,8 +10,6 @@ CREATE TABLE IF NOT EXISTS usertable (
 );
 
 CREATE TABLE IF NOT EXISTS card (
-    #username varchar(255),
-    #package_id int references packages(id),
     card_id varchar(255) primary key not null,
     name varchar(255) not null,
     damage float not null,

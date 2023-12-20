@@ -5,7 +5,7 @@ import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackageRepository;
 import at.technikum.apps.mtcg.service.PackageService;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
-import at.technikum.apps.mtcg.template.Card;
+import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;

@@ -1,8 +1,6 @@
 package at.technikum.apps.mtcg.repository;
 import at.technikum.apps.database.databaseConnection;
-import at.technikum.apps.mtcg.template.UserData;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import at.technikum.apps.mtcg.entity.UserData;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

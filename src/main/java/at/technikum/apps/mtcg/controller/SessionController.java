@@ -3,7 +3,7 @@ package at.technikum.apps.mtcg.controller;
 import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.SessionService;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
-import at.technikum.apps.mtcg.template.User;
+import at.technikum.apps.mtcg.entity.User;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;

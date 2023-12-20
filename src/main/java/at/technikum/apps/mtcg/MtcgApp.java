@@ -1,7 +1,6 @@
 package at.technikum.apps.mtcg;
 
 import at.technikum.apps.mtcg.controller.*;
-import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class MtcgApp implements ServerApplication {
 
-    private List<Controller> controllers = new ArrayList<>();
+    private final List<Controller> controllers = new ArrayList<>();
 
     public MtcgApp() {
         controllers.add(new UserController());
@@ -21,6 +20,7 @@ public class MtcgApp implements ServerApplication {
         controllers.add(new PackageController());
         controllers.add(new TransactionController());
         controllers.add(new CardsController());
+        controllers.add(new DeckController());
     }
 
     @Override

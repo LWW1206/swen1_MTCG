@@ -1,7 +1,7 @@
 package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.database.databaseConnection;
-import at.technikum.apps.mtcg.template.Card;
+import at.technikum.apps.mtcg.entity.Card;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CardRepository extends Repository {
 
-    public void saveCard(Card Card) throws SQLException {
+    public void saveCard(Card Card) {
         String query = "INSERT INTO card (card_id, name, damage, monster_type, element_type) VALUES (?,?,?,?,?)";
         try (Connection connection = databaseConnection.getConnection()) {
             assert connection != null;
@@ -25,22 +25,21 @@ public class CardRepository extends Repository {
                 ps.setString(5, Card.getElementType());
 
                 ps.executeUpdate();
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Card> getDatabyId(List<String> cardsIds) {
+    public List<Card> getDatabyId(List<String> cardIds) {
         List<Card> cards = new ArrayList<>();
         String query = "SELECT * FROM card WHERE card_id IN (";
 
-        // Creating the placeholder string for IDs in the IN clause
+        // Creating placeholders for IDs in the IN clause
         StringBuilder placeholders = new StringBuilder();
-        for (int i = 0; i < cardsIds.size(); i++) {
+        for (int i = 0; i < cardIds.size(); i++) {
             placeholders.append("?");
-            if (i < cardsIds.size() - 1) {
+            if (i < cardIds.size() - 1) {
                 placeholders.append(", ");
             }
         }
@@ -49,10 +48,9 @@ public class CardRepository extends Repository {
         try (Connection connection = databaseConnection.getConnection()) {
             assert connection != null;
             try (PreparedStatement ps = connection.prepareStatement(query)) {
-
                 // Setting values for the placeholders in the IN clause
-                for (int i = 0; i < cardsIds.size(); i++) {
-                    ps.setString(i + 1, cardsIds.get(i));
+                for (int i = 0; i < cardIds.size(); i++) {
+                    ps.setString(i + 1, cardIds.get(i));
                 }
 
                 // Executing the query and retrieving results
@@ -64,7 +62,6 @@ public class CardRepository extends Repository {
                         boolean monsterType = resultSet.getBoolean("monster_type");
                         String elementType = resultSet.getString("element_type");
 
-
                         Card card = new Card(cardId, name, damage, monsterType, elementType);
                         cards.add(card);
                     }
@@ -75,4 +72,5 @@ public class CardRepository extends Repository {
         }
         return cards;
     }
+
 }

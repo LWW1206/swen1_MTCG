@@ -2,16 +2,16 @@ package at.technikum.apps.mtcg.service;
 
 import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
 import at.technikum.apps.mtcg.repository.UserRepository;
-import at.technikum.apps.mtcg.template.UserData;
+import at.technikum.apps.mtcg.entity.UserData;
 import at.technikum.server.http.Request;
 
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService() {
 
-        this.userRepository = userRepository;
+        this.userRepository = new UserRepository();
     }
 
     public boolean createUser(String username, String password) {
@@ -31,7 +31,7 @@ public class UserService {
         return userRepository.atleastFiveCoins(name);
     }
 
-    public boolean buyPackage(String name) {
+    public boolean deductFiveCoins(String name) {
         return userRepository.minusFiveCoins(name);
     }
 

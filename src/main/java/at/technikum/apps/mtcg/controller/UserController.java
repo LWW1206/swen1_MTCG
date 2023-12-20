@@ -1,17 +1,15 @@
 package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
-import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.UserService;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
-import at.technikum.apps.mtcg.template.UserData;
+import at.technikum.apps.mtcg.entity.UserData;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
-import at.technikum.apps.mtcg.template.User;
+import at.technikum.apps.mtcg.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -22,7 +20,7 @@ public class UserController implements Controller {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public UserController() {
-        this.userService = new UserService(new UserRepository());
+        this.userService = new UserService();
     }
 
     @Override

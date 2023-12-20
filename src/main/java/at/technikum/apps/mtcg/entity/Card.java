@@ -1,4 +1,4 @@
-package at.technikum.apps.mtcg.template;
+package at.technikum.apps.mtcg.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,5 +82,14 @@ public class Card {
 
     public String getElementType() {
         return elementType;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + "\n" +
+                "Name: " + name + "\n" +
+                "Damage: " + damage + "\n" +
+                "Element Type: " + elementType + "\n" +
+                "Is Monster: " + monsterBoolean + "\n";
     }
 }

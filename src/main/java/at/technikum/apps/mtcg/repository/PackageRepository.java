@@ -1,7 +1,7 @@
 package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.database.databaseConnection;
-import at.technikum.apps.mtcg.template.Card;
+import at.technikum.apps.mtcg.entity.Card;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

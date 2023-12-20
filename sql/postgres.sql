@@ -29,3 +29,11 @@ create table packages (
     boughtBy varchar(255) DEFAULT null
 );
 
+create table deck (
+    username varchar(255) not null unique,
+    card1id varchar(255),
+    card2id varchar(255),
+    card3id varchar(255),
+    card4id varchar(255)
+);
+

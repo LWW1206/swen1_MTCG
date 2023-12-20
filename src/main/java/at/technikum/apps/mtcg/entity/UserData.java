@@ -1,4 +1,4 @@
-package at.technikum.apps.mtcg.template;
+package at.technikum.apps.mtcg.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

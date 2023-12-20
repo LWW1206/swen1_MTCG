@@ -31,7 +31,7 @@ public class CardRepository extends Repository {
         }
     }
 
-    public List<Card> getDatabyId(List<String> cardIds) {
+    public List<Card> getAllCardDataById(List<String> cardIds) {
         List<Card> cards = new ArrayList<>();
         String query = "SELECT * FROM card WHERE card_id IN (";
 
@@ -71,6 +71,32 @@ public class CardRepository extends Repository {
             e.printStackTrace();
         }
         return cards;
+    }
+
+    public Card getCardById(String cardId) {
+        String query = "SELECT * FROM card WHERE card_id = ?";
+        Card card = null;
+
+        try (Connection connection = databaseConnection.getConnection()) {
+            assert connection != null;
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, cardId);
+
+                try (ResultSet resultSet = ps.executeQuery()) {
+                    if (resultSet.next()) {
+                        String name = resultSet.getString("name");
+                        float damage = resultSet.getFloat("damage");
+                        boolean monsterType = resultSet.getBoolean("monster_type");
+                        String elementType = resultSet.getString("element_type");
+
+                        card = new Card(cardId, name, damage, monsterType, elementType);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return card;
     }
 
 }

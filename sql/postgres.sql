@@ -35,3 +35,12 @@ create table deck (
     card4id varchar(255)
 );
 
+create table Stats (
+    username varchar(255) not null,
+    games_played int default 0 not null,
+    games_won int default 0 not null,
+    games_lost int default 0 not null,
+    elo int default 100 not null,
+    FOREIGN KEY (username) references users(username)
+);
+

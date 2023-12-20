@@ -14,7 +14,6 @@ public class AuthorizationHelper {
     }
 
     public static boolean isAdmin(Request request) {
-
         String token = request.getToken(request);
         return token != null && token.equals("admin-mtcgToken");
     }

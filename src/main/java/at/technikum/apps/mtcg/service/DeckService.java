@@ -12,6 +12,7 @@ import at.technikum.server.http.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class DeckService {
 
     private Response getDeckFromDBPlain(List<String> cardIds) {
         List<Card> retrievedCards;
-        retrievedCards = cardsService.getCardData(cardIds);
+        retrievedCards = cardsService.getAllCardData(cardIds);
         StringBuilder plainTextResponse = new StringBuilder();
         for (Card card : retrievedCards) {
             plainTextResponse.append(card.toString()).append("\n");
@@ -100,7 +101,7 @@ public class DeckService {
 
     private Response getDeckFromDBJson(List<String> cardIds) {
         List<Card> retrievedCards;
-        retrievedCards = cardsService.getCardData(cardIds);
+        retrievedCards = cardsService.getAllCardData(cardIds);
         try {
             String cardJson = objectMapper.writeValueAsString(retrievedCards);
             return ResponseHelper.generateResponse(HttpStatus.OK, cardJson);
@@ -115,5 +116,14 @@ public class DeckService {
 
     boolean isFormatPlain(Request request) {
         return request.getRoute().contains("?format=plain");
+    }
+
+    public List <Card> getDeckAsList(String name) {
+        List<String> deckCardIds = deckRepository.getDeckFromUser(name);
+        List<Card> deckCards = new ArrayList<>();
+        for (String cardId : deckCardIds) {
+            deckCards.add(cardsService.getCardData(cardId));
+        }
+        return deckCards;
     }
 }

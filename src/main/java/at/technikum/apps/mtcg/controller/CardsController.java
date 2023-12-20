@@ -51,7 +51,7 @@ public class CardsController implements Controller {
         try {
             List <Card> retrivedCards;
             List<String> cardsIds = packageService.getCardIds(username);
-            retrivedCards = cardsService.getCardData(cardsIds);
+            retrivedCards = cardsService.getAllCardData(cardsIds);
             String cardsJson = objectMapper.writeValueAsString(retrivedCards);
             if(retrivedCards.isEmpty()) {
                 return ResponseHelper.generateResponse(HttpStatus.NO_CONTENT, "The request was fine, but the user doesn't have any cards");

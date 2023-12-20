@@ -1,6 +1,8 @@
 package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.database.databaseConnection;
+import at.technikum.apps.mtcg.entity.Card;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,4 +55,5 @@ public class DeckRepository {
             logger.log(Level.SEVERE, "Error creating deck for user: " + name, e);
         }
     }
+
 }

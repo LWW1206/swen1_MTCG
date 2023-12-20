@@ -11,8 +11,12 @@ public class CardsService {
     public CardsService() {
         this.cardRepository = new CardRepository();
     }
-    public List <Card> getCardData(List<String> cardsIds) {
-        return cardRepository.getDatabyId(cardsIds);
+    public List <Card> getAllCardData(List<String> cardsIds) {
+        return cardRepository.getAllCardDataById(cardsIds);
+    }
+
+    public Card getCardData(String cardId) {
+        return cardRepository.getCardById(cardId);
     }
 
 

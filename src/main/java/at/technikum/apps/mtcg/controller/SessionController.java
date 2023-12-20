@@ -26,15 +26,10 @@ public class SessionController implements Controller {
     @Override
     public Response handle(Request request) {
 
-        Response response = new Response();
-        if (request.getRoute().equals("/sessions")) {
-            switch (request.getMethod()) {
-                case "POST":
-                    return loginUser(request);
-            }
-
+        if (!request.getMethod().equals("POST")) {
+            return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "route package only takes post requests");
         }
-        return response;
+        return loginUser(request);
     }
 
     private Response loginUser(Request request) {
@@ -48,15 +43,16 @@ public class SessionController implements Controller {
             e.printStackTrace();
         }
 
-        if (user != null) {
-            boolean loggedIn = sessionService.loginUser(user.getUsername(), user.getPassword());
-            if (loggedIn) {
-                return ResponseHelper.generateResponse(HttpStatus.OK, "User logged in successfully");
-            } else {
-                return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "Invalid username or password");
-            }
-        } else {
+        if (user == null) {
             return ResponseHelper.generateResponse(HttpStatus.BAD_REQUEST, "Invalid user data");
         }
-    }
+        boolean loggedIn = sessionService.loginUser(user.getUsername(), user.getPassword());
+        if (loggedIn) {
+            return ResponseHelper.generateResponse(HttpStatus.OK, "User logged in successfully");
+        }
+
+        return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+        }
 }
+
+

@@ -17,12 +17,4 @@ public class databaseConnection {
         }
         return null;
     }
-
-    public static void closeConnection(Connection connection) {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
  }

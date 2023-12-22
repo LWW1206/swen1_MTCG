@@ -99,4 +99,41 @@ public class CardRepository extends Repository {
         return card;
     }
 
+    public void updateOwner(String cardId, String newOwner) {
+        String query = "UPDATE card SET owner = ? WHERE card_id = ?";
+
+        try (Connection connection = databaseConnection.getConnection()) {
+            assert connection != null;
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, newOwner);
+                ps.setString(2, cardId);
+
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<String> getCardIdByUser(String userName) {
+        List<String> cardIds = new ArrayList<>();
+        String query = "SELECT card_id FROM card WHERE owner = ?";
+
+        try (Connection connection = databaseConnection.getConnection()) {
+            assert connection != null;
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, userName);
+
+                try (ResultSet resultSet = ps.executeQuery()) {
+                    while (resultSet.next()) {
+                        String cardId = resultSet.getString("card_id");
+                        cardIds.add(cardId);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cardIds;
+    }
 }

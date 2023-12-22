@@ -50,7 +50,7 @@ public class CardsController implements Controller {
 
         try {
             List <Card> retrivedCards;
-            List<String> cardsIds = packageService.getCardIds(username);
+            List<String> cardsIds = cardsService.getUsersCards(username);
             retrivedCards = cardsService.getAllCardData(cardsIds);
             String cardsJson = objectMapper.writeValueAsString(retrivedCards);
             if(retrivedCards.isEmpty()) {

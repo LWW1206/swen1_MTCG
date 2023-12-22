@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS card (
     name varchar(255) not null,
     damage float not null,
     monster_type boolean not null,
-    element_type varchar(50) not null
+    element_type varchar(255) not null,
+    owner varchar(255)
 );
 
 create table packages (
@@ -47,9 +48,9 @@ create table stats (
 create table tradingdeal (
     tradeid varchar(255) not null,
     cardid varchar(255) not null,
-    type varchar(50) not null,
+    type varchar(255) not null,
     minDmg int,
-    element varchar(50)
+    element varchar(255)
 );
 
 

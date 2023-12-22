@@ -30,12 +30,11 @@ public class PackageService {
     }
 
     public boolean buyPackage(String name) {
-        return packageRepository.buyPackage(name);
+        List <String> boughtCardIds = packageRepository.buyPackage(name);
+        for (String cardId : boughtCardIds) {
+            cardRepository.updateOwner(cardId, name);
+        }
+
+        return true;
     }
-
-    public List <String> getCardIds(String name) {
-        return packageRepository.getAllCardsByUser(name);
-    }
-
-
 }

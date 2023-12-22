@@ -19,5 +19,9 @@ public class CardsService {
         return cardRepository.getCardById(cardId);
     }
 
+    public List <String> getUsersCards(String userName) {
+        return cardRepository.getCardIdByUser(userName);
+    }
+
 
 }

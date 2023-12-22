@@ -3,10 +3,7 @@ package at.technikum.apps.mtcg.repository;
 import at.technikum.apps.database.databaseConnection;
 import at.technikum.apps.mtcg.entity.Card;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,50 +44,63 @@ public class PackageRepository {
         return false;
     }
 
-    public boolean buyPackage(String user) {
-        String updateQuery = "UPDATE packages SET boughtBy = ? WHERE id = (SELECT id FROM packages WHERE boughtBy IS NULL ORDER BY id LIMIT 1)";
-
-        try (Connection connection = databaseConnection.getConnection()) {
-            assert connection != null;
-            try (PreparedStatement ps = connection.prepareStatement(updateQuery)) {
-                ps.setString(1, user);
-
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected > 0) {
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public List<String> buyPackage(String user) {
+        int packageId = updatePackageBoughtBy(user);
+        if (packageId != -1) {
+            return getBoughtCardIds(packageId);
         }
-        return false;
+        return new ArrayList<>();
     }
 
-    public List<String> getAllCardsByUser(String username) {
-        List<String> cardIds = new ArrayList<>();
-        String query = "SELECT card1, card2, card3, card4, card5 FROM packages WHERE boughtBy = ?";
+    private int updatePackageBoughtBy(String user) {
+        String updateQuery = "UPDATE packages SET boughtBy = ? WHERE id = (SELECT id FROM packages WHERE boughtBy IS NULL ORDER BY id LIMIT 1)";
+        int packageId = -1;
 
         try (Connection connection = databaseConnection.getConnection()) {
             assert connection != null;
-            try (PreparedStatement ps = connection.prepareStatement(query)) {
+            try (PreparedStatement ps = connection.prepareStatement(updateQuery, Statement.RETURN_GENERATED_KEYS)) {
 
-                ps.setString(1, username);
+                ps.setString(1, user);
+                int rowsAffected = ps.executeUpdate();
 
-                try (ResultSet result = ps.executeQuery()) {
-                    while (result.next()) {
-                        cardIds.add(result.getString("card1"));
-                        cardIds.add(result.getString("card2"));
-                        cardIds.add(result.getString("card3"));
-                        cardIds.add(result.getString("card4"));
-                        cardIds.add(result.getString("card5"));
+                if (rowsAffected > 0) {
+                    try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            packageId = generatedKeys.getInt(1);
+                        }
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        return cardIds;
+        return packageId;
     }
+
+    private List<String> getBoughtCardIds(int packageId) {
+        List<String> boughtCardIds = new ArrayList<>();
+        String query = "SELECT card1, card2, card3, card4, card5 FROM packages WHERE id = ?";
+
+        try (Connection connection = databaseConnection.getConnection()) {
+            assert connection != null;
+            try (PreparedStatement selectStatement = connection.prepareStatement(query)) {
+
+                selectStatement.setInt(1, packageId);
+                try (ResultSet resultSet = selectStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        boughtCardIds.add(resultSet.getString("card1"));
+                        boughtCardIds.add(resultSet.getString("card2"));
+                        boughtCardIds.add(resultSet.getString("card3"));
+                        boughtCardIds.add(resultSet.getString("card4"));
+                        boughtCardIds.add(resultSet.getString("card5"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return boughtCardIds;
+    }
+
+
 }

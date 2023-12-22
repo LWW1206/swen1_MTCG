@@ -2,10 +2,8 @@ package at.technikum.apps.mtcg.service;
 
 import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
-import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.DeckRepository;
 import at.technikum.apps.mtcg.entity.Card;
-import at.technikum.apps.mtcg.repository.PackageRepository;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -21,7 +19,6 @@ public class DeckService {
     private final UserService userService;
     private final DeckRepository deckRepository;
     private final CardsService cardsService;
-    private final PackageService packageService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -29,7 +26,6 @@ public class DeckService {
         this.userService = new UserService();
         this.deckRepository = new DeckRepository();
         this.cardsService = new CardsService();
-        this.packageService = new PackageService(new PackageRepository(), new CardRepository());
     }
 
     public Response configureDeck(Request request) {
@@ -54,7 +50,7 @@ public class DeckService {
     }
 
     private boolean ownsCards(String userName, List <String> deckCardIds) {
-        List<String> userCardIds = packageService.getCardIds(userName);
+        List<String> userCardIds = cardsService.getUsersCards(userName);
 
         for (String deckCardId : deckCardIds) {
             if (!userCardIds.contains(deckCardId)) {
@@ -106,7 +102,7 @@ public class DeckService {
             String cardJson = objectMapper.writeValueAsString(retrievedCards);
             return ResponseHelper.generateResponse(HttpStatus.OK, cardJson);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            return ResponseHelper.generateResponse(HttpStatus.BAD_REQUEST, "couldn't retrieve the carddata");
         }
     }
 

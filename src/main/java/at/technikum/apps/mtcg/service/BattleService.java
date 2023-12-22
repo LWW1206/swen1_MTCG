@@ -16,6 +16,7 @@ import java.util.Random;
 public class BattleService {
     private final UserService userService;
     private final DeckService deckService;
+    private final StatsService statsService;
     private Player player1;
     private Player player2;
     private List<Card> deck1;
@@ -27,6 +28,7 @@ public class BattleService {
     public BattleService() {
         this.userService = new UserService();
         this.deckService = new DeckService();
+        this.statsService = new StatsService();
         this.winnerSet = false;
         this.spellEffectiveness = initializeEffectivenessMap();
         this.monsterSpecialties = initializeMonsterSpecialtiesMap();
@@ -181,10 +183,12 @@ public class BattleService {
     public String checkIfWin() {
         if(deck1.isEmpty() || player1.isDead()) {
             winnerSet = true;
+            statsService.updateUserStats(player2.getName(), player1.getName());
             return "Player 2 has won!\n";
         }
         if(deck2.isEmpty() || player2.isDead()){
             winnerSet = true;
+            statsService.updateUserStats(player1.getName(), player2.getName());
             return "Player 1 has won!\n";
         }
         return "";

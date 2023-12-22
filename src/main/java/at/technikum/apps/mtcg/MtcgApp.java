@@ -22,6 +22,8 @@ public class MtcgApp implements ServerApplication {
         controllers.add(new CardsController());
         controllers.add(new DeckController());
         controllers.add(new BattleController());
+        controllers.add(new StatsController());
+        controllers.add(new ScoreboardController());
     }
 
     @Override

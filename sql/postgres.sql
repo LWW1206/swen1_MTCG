@@ -1,12 +1,12 @@
 
 CREATE TABLE IF NOT EXISTS usertable (
     username VARCHAR(255) PRIMARY KEY,
-    password VARCHAR(255) NOT NULL,
-    token VARCHAR(255) DEFAULT NULL,
+    password VARCHAR(255) not null,
+    token VARCHAR(255) default null,
     coins INT DEFAULT 20,
-    name VARCHAR(255) DEFAULT NULL,
-    bio VARCHAR(255) DEFAULT NULL,
-    image VARCHAR(266) DEFAULT NULL
+    name VARCHAR(255) default null,
+    bio VARCHAR(255) default null,
+    image VARCHAR(266) default null,
 );
 
 CREATE TABLE IF NOT EXISTS card (
@@ -24,7 +24,7 @@ create table packages (
     card3 varchar(255) not null,
     card4 varchar(255) not null,
     card5 varchar(255) not null,
-    boughtBy varchar(255) DEFAULT null
+    boughtBy varchar(255) default null
 );
 
 create table deck (
@@ -35,12 +35,21 @@ create table deck (
     card4id varchar(255)
 );
 
-create table Stats (
+create table stats (
     username varchar(255) not null,
     games_played int default 0 not null,
     games_won int default 0 not null,
     games_lost int default 0 not null,
     elo int default 100 not null,
-    FOREIGN KEY (username) references users(username)
+    FOREIGN KEY (username) references usertable(username)
 );
+
+create table tradingdeal (
+    tradeid varchar(255) not null,
+    cardid varchar(255) not null,
+    type varchar(50) not null,
+    minDmg int,
+    element varchar(50)
+);
+
 

@@ -171,10 +171,10 @@ public class BattleService {
 
             if (name1.contains(key) && name2.contains(value)) { // Handle autolose scenario
                 player2.deductHp(card1.getDamage());
-                return moveCardBetweenDecks(card1, deck1, deck2, "\n" + name1 + " auto-loses to " + name2);
+                return moveCardBetweenDecks(card1, deck1, deck2, "\n" + name1 + " auto-wins against " + name2);
             } else if (name2.contains(key) && name1.contains(value)) {
                 player1.deductHp(card2.getDamage());
-                return moveCardBetweenDecks(card2, deck2, deck1,  "\n"+ name2 + " auto-loses to " + name1);
+                return moveCardBetweenDecks(card2, deck2, deck1,  "\n"+ name2 + " auto-wins against " + name1);
             }
         }
         return null;

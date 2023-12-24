@@ -46,11 +46,11 @@ create table stats (
 );
 
 create table tradingdeal (
-    tradeid varchar(255) not null,
+    tradeid varchar(255) not null unique,
     cardid varchar(255) not null,
     type varchar(255) not null,
-    minDmg int,
-    element varchar(255)
+    minDmg float,
+    creator varchar(255) not null
 );
 
 

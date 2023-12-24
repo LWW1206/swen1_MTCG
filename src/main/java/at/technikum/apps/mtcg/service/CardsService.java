@@ -22,6 +22,9 @@ public class CardsService {
     public List <String> getUsersCards(String userName) {
         return cardRepository.getCardIdByUser(userName);
     }
+    public void updateOwner(String newOwner, String cardid) {
+        cardRepository.updateOwner(cardid, newOwner);
+    }
 
 
 }

@@ -34,7 +34,6 @@ public class PackageService {
         for (String cardId : boughtCardIds) {
             cardRepository.updateOwner(cardId, name);
         }
-
         return true;
     }
 }

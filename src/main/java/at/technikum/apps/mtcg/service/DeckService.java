@@ -86,8 +86,7 @@ public class DeckService {
     }
 
     private Response getDeckFromDBPlain(List<String> cardIds) {
-        List<Card> retrievedCards;
-        retrievedCards = cardsService.getAllCardData(cardIds);
+        List<Card> retrievedCards = cardsService.getAllCardData(cardIds);
         StringBuilder plainTextResponse = new StringBuilder();
         for (Card card : retrievedCards) {
             plainTextResponse.append(card.toString()).append("\n");
@@ -96,8 +95,7 @@ public class DeckService {
     }
 
     private Response getDeckFromDBJson(List<String> cardIds) {
-        List<Card> retrievedCards;
-        retrievedCards = cardsService.getAllCardData(cardIds);
+        List<Card> retrievedCards = cardsService.getAllCardData(cardIds);
         try {
             String cardJson = objectMapper.writeValueAsString(retrievedCards);
             return ResponseHelper.generateResponse(HttpStatus.OK, cardJson);

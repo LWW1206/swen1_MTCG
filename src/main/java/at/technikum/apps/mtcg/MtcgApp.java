@@ -1,7 +1,9 @@
 package at.technikum.apps.mtcg;
 
 import at.technikum.apps.mtcg.controller.*;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.BattleService;
+import at.technikum.apps.mtcg.service.UserService;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
@@ -16,7 +18,7 @@ public class MtcgApp implements ServerApplication {
     private final List<Controller> controllers = new ArrayList<>();
 
     public MtcgApp() {
-        controllers.add(new UserController());
+        controllers.add(new UserController(new UserService(new UserRepository())));
         controllers.add(new SessionController());
         controllers.add(new PackageController());
         controllers.add(new TransactionController());

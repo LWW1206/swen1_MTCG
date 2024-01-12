@@ -4,6 +4,7 @@ import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
 import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.apps.mtcg.entity.Player;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -17,16 +18,17 @@ public class BattleService {
     private final UserService userService;
     private final DeckService deckService;
     private final StatsService statsService;
-    private Player player1;
-    private Player player2;
-    private List<Card> deck1;
-    private List<Card> deck2;
-    private boolean winnerSet;
+    Player player1;
+    Player player2;
+    List<Card> deck1;
+    List<Card> deck2;
+
     private final Map<String, String> spellEffectiveness;
     private final Map<String, String> monsterSpecialties;
+    public boolean winnerSet;
 
     public BattleService() {
-        this.userService = new UserService();
+        this.userService = new UserService(new UserRepository());
         this.deckService = new DeckService();
         this.statsService = new StatsService();
         this.winnerSet = false;
@@ -95,7 +97,7 @@ public class BattleService {
         return battleLogger.toString();
     }
 
-    private String fight(Card card1, Card card2) {
+    String fight(Card card1, Card card2) {
         if(card1.getMonsterType() && card2.getMonsterType())
             return monsterVSMonsterBattle(card1, card2);
         else
@@ -147,7 +149,7 @@ public class BattleService {
         return winMessage;
     }
 
-    private float modifySpellDamage(String elementType1, String elementType2, float damage) {
+    float modifySpellDamage(String elementType1, String elementType2, float damage) {
         String key = elementType1 + "->" + elementType2;
 
         if (spellEffectiveness.containsKey(key)) {
@@ -161,7 +163,7 @@ public class BattleService {
         return damage;
     }
 
-    private String checkSpecialties(Card card1, Card card2) {
+    String checkSpecialties(Card card1, Card card2) {
         String name1 = card1.getName();
         String name2 = card2.getName();
 
@@ -194,7 +196,7 @@ public class BattleService {
         return "";
     }
 
-    private Card getRandomCard(List<Card> deck) {
+    Card getRandomCard(List<Card> deck) {
         Random random = new Random();
         int randomIndex = random.nextInt(deck.size());
         return deck.get(randomIndex);

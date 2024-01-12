@@ -4,6 +4,7 @@ import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackageRepository;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.CardsService;
 import at.technikum.apps.mtcg.service.PackageService;
 import at.technikum.apps.mtcg.service.UserService;
@@ -24,7 +25,7 @@ public class CardsController implements Controller {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public CardsController() {
-        this.userService = new UserService();
+        this.userService = new UserService(new UserRepository());
         this.cardsService = new CardsService();
         this.packageService = new PackageService(new PackageRepository(), new CardRepository());
     }

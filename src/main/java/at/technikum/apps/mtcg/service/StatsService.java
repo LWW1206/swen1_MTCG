@@ -4,6 +4,7 @@ import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
 import at.technikum.apps.mtcg.entity.UserStats;
 import at.technikum.apps.mtcg.repository.StatsRepository;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -17,7 +18,7 @@ public class StatsService {
     private final ObjectMapper objectMapper;
 
     public StatsService() {
-        this.userService = new UserService();
+        this.userService = new UserService(new UserRepository());
         this.statsRepository = new StatsRepository();
         this.objectMapper = new ObjectMapper();
     }

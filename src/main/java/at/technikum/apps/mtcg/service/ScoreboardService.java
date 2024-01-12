@@ -5,6 +5,7 @@ import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
 import at.technikum.apps.mtcg.entity.User;
 import at.technikum.apps.mtcg.entity.UserStats;
 import at.technikum.apps.mtcg.repository.StatsRepository;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -20,7 +21,7 @@ public class ScoreboardService {
 
     public ScoreboardService() {
         this.statsRepository = new StatsRepository();
-        this.userService = new UserService();
+        this.userService = new UserService(new UserRepository());
     }
 
 

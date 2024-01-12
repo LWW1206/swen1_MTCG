@@ -1,6 +1,7 @@
 package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.UserService;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
 import at.technikum.apps.mtcg.entity.UserData;
@@ -19,8 +20,8 @@ public class UserController implements Controller {
     private final UserService userService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public UserController() {
-        this.userService = new UserService();
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -47,7 +48,7 @@ public class UserController implements Controller {
         return ResponseHelper.generateResponse(HttpStatus.OK, "in user controller");
     }
 
-    private Response getUserData(Request request) {
+    Response getUserData(Request request) {
 
         String username = AuthorizationHelper.getNameFromRoute(request);
 
@@ -65,7 +66,7 @@ public class UserController implements Controller {
         }
     }
 
-    private Response updateUser(Request request) {
+    Response updateUser(Request request) {
 
         String username = AuthorizationHelper.getNameFromRoute(request);
 

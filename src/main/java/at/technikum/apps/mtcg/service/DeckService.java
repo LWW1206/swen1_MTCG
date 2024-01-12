@@ -4,6 +4,7 @@ import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
 import at.technikum.apps.mtcg.repository.DeckRepository;
 import at.technikum.apps.mtcg.entity.Card;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -23,7 +24,7 @@ public class DeckService {
 
 
     public DeckService() {
-        this.userService = new UserService();
+        this.userService = new UserService(new UserRepository());
         this.deckRepository = new DeckRepository();
         this.cardsService = new CardsService();
     }

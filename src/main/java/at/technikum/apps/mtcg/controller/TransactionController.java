@@ -2,6 +2,7 @@ package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackageRepository;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.PackageService;
 import at.technikum.apps.mtcg.service.UserService;
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
@@ -12,7 +13,7 @@ import at.technikum.apps.mtcg.controller.helpers.AuthorizationHelper;
 
 public class TransactionController implements Controller {
 
-    private final UserService userService = new UserService();
+    private final UserService userService = new UserService(new UserRepository());
     private final PackageService packageService = new PackageService(new PackageRepository(), new CardRepository());
 
     public TransactionController() {

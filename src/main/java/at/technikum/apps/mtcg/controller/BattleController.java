@@ -1,9 +1,7 @@
 package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.controller.helpers.ResponseHelper;
-import at.technikum.apps.mtcg.repository.CardRepository;
-import at.technikum.apps.mtcg.repository.PackageRepository;
-import at.technikum.apps.mtcg.service.*;
+import at.technikum.apps.mtcg.service.BattleService;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
@@ -26,32 +24,25 @@ public class BattleController implements Controller {
 
     @Override
     public Response handle(Request request) {
-        if (!request.getMethod().equals("POST")) {
-            return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "route battle only takes post requests");
-        }
-
         synchronized (this) {
             if (!isBattlePending) {
                 isBattlePending = true;
                 pendingBattleRequest = request;
+                return ResponseHelper.generateResponse(HttpStatus.OK, "Waiting for an opponent...");
             } else {
                 isBattlePending = false;
-                notify(); // Notify the waiting thread that a battle is pending
-                return ResponseHelper.generateResponse(HttpStatus.OK, "Waiting for an opponent...");
+                return startBattle(request);
             }
         }
+    }
 
-        try {
-            // Wait until notified by another thread or timeout
-            synchronized (pendingBattleRequest) {
-                pendingBattleRequest.wait(5000); // 5 seconds timeout
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+    private Response startBattle(Request secondRequest) {
+        // Notify the waiting thread that a battle is pending
+        synchronized (pendingBattleRequest) {
+            pendingBattleRequest.notify();
         }
 
         // The thread has been notified, continue with the battle
-        return battleService.startBattle(pendingBattleRequest, request);
+        return battleService.startBattle(pendingBattleRequest, secondRequest);
     }
 }
-

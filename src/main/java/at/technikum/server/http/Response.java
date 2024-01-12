@@ -15,6 +15,7 @@ public class Response {
         this.statusMessage = httpStatus.getMessage();
     }
 
+
     public int getStatusCode() {
         return statusCode;
     }
@@ -39,8 +40,15 @@ public class Response {
         this.body = body;
     }
     public HttpStatus getStatus() {
-        return HttpStatus.valueOf(String.valueOf(statusCode));
+        for (HttpStatus status : HttpStatus.values()) {
+            if (status.getCode() == statusCode) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Invalid status code: " + statusCode);
     }
+
+
 
 
 }

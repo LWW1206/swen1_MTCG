@@ -72,7 +72,7 @@ public class BattleService {
         return ResponseHelper.generateResponse(HttpStatus.OK, "got 2 players now");
     }
 
-    private String conductBattle() {
+    public String conductBattle() {
         StringBuilder battleLogger = new StringBuilder();
 
         int roundCnt = 0;

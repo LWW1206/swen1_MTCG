@@ -1,6 +1,7 @@
 package at.technikum.apps.mtcg;
 
 import at.technikum.apps.mtcg.controller.*;
+import at.technikum.apps.mtcg.service.BattleService;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
@@ -21,7 +22,7 @@ public class MtcgApp implements ServerApplication {
         controllers.add(new TransactionController());
         controllers.add(new CardsController());
         controllers.add(new DeckController());
-        controllers.add(new BattleController());
+        controllers.add(new BattleController(new BattleService()));
         controllers.add(new StatsController());
         controllers.add(new ScoreboardController());
         controllers.add((new TradingController()));

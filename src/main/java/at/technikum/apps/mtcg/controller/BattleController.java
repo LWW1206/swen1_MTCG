@@ -13,10 +13,12 @@ public class BattleController implements Controller {
     private final BattleService battleService;
     private Request pendingBattleRequest;
     private boolean isBattlePending;
-    public BattleController() {
-        this.battleService = new BattleService();
+
+    public BattleController(BattleService battleService) {
+        this.battleService = battleService;
         this.isBattlePending = false;
     }
+
     @Override
     public boolean supports(String route) {
         return route.startsWith("/battle");
@@ -27,15 +29,29 @@ public class BattleController implements Controller {
         if (!request.getMethod().equals("POST")) {
             return ResponseHelper.generateResponse(HttpStatus.UNAUTHORIZED, "route battle only takes post requests");
         }
+
         synchronized (this) {
             if (!isBattlePending) {
                 isBattlePending = true;
                 pendingBattleRequest = request;
-                return ResponseHelper.generateResponse(HttpStatus.OK, "Waiting for an opponent...");
             } else {
                 isBattlePending = false;
-                return battleService.startBattle(pendingBattleRequest, request);
+                notify(); // Notify the waiting thread that a battle is pending
+                return ResponseHelper.generateResponse(HttpStatus.OK, "Waiting for an opponent...");
             }
         }
+
+        try {
+            // Wait until notified by another thread or timeout
+            synchronized (pendingBattleRequest) {
+                pendingBattleRequest.wait(5000); // 5 seconds timeout
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        // The thread has been notified, continue with the battle
+        return battleService.startBattle(pendingBattleRequest, request);
     }
 }
+

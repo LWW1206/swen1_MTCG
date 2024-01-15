@@ -28,21 +28,27 @@ public class BattleController implements Controller {
             if (!isBattlePending) {
                 isBattlePending = true;
                 pendingBattleRequest = request;
-                return ResponseHelper.generateResponse(HttpStatus.OK, "Waiting for an opponent...");
+                try {
+                    wait(); // Release the lock and wait for notification
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return ResponseHelper.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error during battle initiation.");
+                }
+                return ResponseHelper.generateResponse(HttpStatus.OK, "Battle started!");
             } else {
                 isBattlePending = false;
-                return startBattle(request);
+                Request firstRequest = pendingBattleRequest;
+                pendingBattleRequest = null; // Reset the pending request
+
+                // Release the lock immediately after retrieving the pending request
+                notify();
+
+                return startBattle(firstRequest, request);
             }
         }
     }
 
-    private Response startBattle(Request secondRequest) {
-        // Notify the waiting thread that a battle is pending
-        synchronized (pendingBattleRequest) {
-            pendingBattleRequest.notify();
-        }
-
-        // The thread has been notified, continue with the battle
-        return battleService.startBattle(pendingBattleRequest, secondRequest);
+    Response startBattle(Request firstRequest, Request secondRequest) {
+        return battleService.startBattle(firstRequest, secondRequest);
     }
 }

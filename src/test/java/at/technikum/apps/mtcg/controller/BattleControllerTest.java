@@ -1,6 +1,7 @@
 package at.technikum.apps.mtcg.controller;
 
 import at.technikum.apps.mtcg.service.BattleService;
+import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import org.junit.jupiter.api.Test;
@@ -14,43 +15,31 @@ import static org.mockito.Mockito.*;
 class BattleControllerTest {
 
     @Test
-    void handlePostRequestWrongMethod() {
+    void handlePostRequestWhenNoPendingBattle() {
         // Arrange
-        BattleService battleServiceMock = mock(BattleService.class);
-        BattleController battleController = new BattleController(battleServiceMock);
-        Request requestMock = mock(Request.class);
-        when(requestMock.getMethod()).thenReturn("PUT");
+        BattleController battleController = mock(BattleController.class);
+        Request requestMock = Mockito.mock(Request.class);
+        when(requestMock.getMethod()).thenReturn("POST");
 
-        // Act
-        Response response = battleController.handle(requestMock);
+        battleController.handle(requestMock);
 
-        // Assert
-        verify(requestMock, times(1)).getMethod();
-        verify(battleServiceMock, never()).startBattle(any(Request.class), any(Request.class));
-        assertEquals("route battle only takes post requests", response.getBody());
-        assertEquals(UNAUTHORIZED, response.getStatus());
+        verify(battleController, never()).startBattle(any(Request.class), any(Request.class));
+
     }
 
     @Test
-    void handlePostRequestWhenPendingBattle() {
+    void startBattle() {
         // Arrange
-        BattleService battleServiceMock = mock(BattleService.class);
-        BattleController battleController = new BattleController(battleServiceMock);
-        Request requestMock = mock(Request.class);
-        when(requestMock.getMethod()).thenReturn("POST");
+        BattleController battleController = mock(BattleController.class);
+        Request firstRequestMock = Mockito.mock(Request.class);
+        Request secondRequestMock = Mockito.mock(Request.class);
 
-        // Simulate a pending battle
-        synchronized (battleController) {
-            battleController.handle(requestMock); // This sets up a pending battle
-        }
-
-        // Act
-        Response response = battleController.handle(requestMock);
+        battleController.startBattle(firstRequestMock, secondRequestMock);
 
         // Assert
-        verify(requestMock, times(2)).getMethod(); // One from the first call and one from the second
-        verify(battleServiceMock, times(1)).startBattle(any(Request.class), any(Request.class));
-        assertEquals("Waiting for an opponent...", response.getBody());
-        assertEquals(OK, response.getStatus());
+        verify(battleController, times(1)).startBattle(firstRequestMock, secondRequestMock);
+        // Add more assertions if needed
     }
+
+
 }

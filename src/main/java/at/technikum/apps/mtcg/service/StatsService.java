@@ -44,10 +44,8 @@ public class StatsService {
         try {
             statsRepository.updateUserStats(userStats);
             ResponseHelper.generateResponse(HttpStatus.OK, "The stats were updated sucessfully");
-            //TODO no response needed
         } catch (RuntimeException e) {
             ResponseHelper.generateResponse(HttpStatus.BAD_REQUEST, "something went wrong updating userstats");
-            //TODO logger maybe
         }
     }
 

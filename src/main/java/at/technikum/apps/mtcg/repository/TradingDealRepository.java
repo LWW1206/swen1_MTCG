@@ -49,7 +49,7 @@ public class TradingDealRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e); // TODO add logger
+            throw new RuntimeException(e);
         }
         return availableDeals;
     }
@@ -82,7 +82,7 @@ public class TradingDealRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e); // TODO add logger
+            throw new RuntimeException(e);
         }
         return false;
     }
@@ -104,7 +104,7 @@ public class TradingDealRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e); // TODO add logger
+            throw new RuntimeException(e);
         }
 
         return creator;
@@ -125,7 +125,7 @@ public class TradingDealRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e); // TODO add logger
+            throw new RuntimeException(e);
         }
 
         return cardId;
@@ -147,7 +147,7 @@ public class TradingDealRepository {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e); // TODO add logger
+            throw new RuntimeException(e);
         }
 
         return creator;
